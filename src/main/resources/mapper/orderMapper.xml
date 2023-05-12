@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.campus.mapper.OrderMapper">
+    <resultMap id="OrderMapper" type="com.example.campus.entity.Orders">
+        <id column="order_id" property="orderId"/>
+        <result column="order_info" property="orderInfo"/>
+        <result column="order_name" property="orderName"/>
+        <result column="create_time" property="createTime"/>
+        <result column="postman_id" property="postmanId"/>
+        <result column="finish_time" property="finishTime"/>
+        <result column="start_point" property="startPoint"/>
+        <result column="end_point" property="endPoint"/>
+
+    </resultMap>
+    <insert id="createOrders">
+            insert into orders (start_point,end_point,price,order_info,create_time,several) VALUES (#{startPoint},#{endPoint},#{price},#{orderInfo},#{createTime},#{several})
+    </insert>
+
+
+    <select id="getallorder" resultType="com.example.campus.entity.Orders">
+        select  * from orders
+</select>
+    <select id="getOrdersByOrderId" resultType="com.example.campus.entity.Orders">
+        select *
+        from orders where order_id = #{orderId};
+    </select>
+
+
+</mapper>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="/pages/js/jquery-1.8.0.min.js" type="text/javascript" charset="UTF-8"></script>
+    <link rel="stylesheet" type="text/css" href="/pages/css/change.css"/>
+</head>
+<body>
+<div class="control">
+    <div class="item">
+        <div class="active">登录</div>
+        <div>注册</div>
+    </div>
+    <div class="content">
+        <div style="display: block">
+            <p>账号</p>
+            <input id="username" type="text" placeholder="username">
+            <p>密码</p>
+            <input id="password" type="password" placeholder="password">
+            <br>
+            <button type="submit" value="登录" onclick="login()">denglu</button>
+        </div>
+    </div>
+</div>
+</body>
+<script type="text/javascript">
+    function login() {
+        var username = $("#username").val();
+        var password = $("#password").val();
+        if (username !== "" && password !== "") {
+            $.ajax({
+                type: "get",
+                url: "http://localhost:8080/login",
+                dataType: "JSON",
+                data: "userName=" + username + "&password=" + password,
+                success:function (res){
+                    if (res.state===200){
+                        alert(res.data)
+                        console.log(res)
+                        location.href="myInfo.html"
+                }else if(res.state===1000){
+                    alert("用户未注册")
+                    }else if (res.state===1001){
+                        alert("密码错误")
+                    }
+                },
+                error:function (res){
+                    alert("未知错误")
+                }
+            })
+        }else {
+            alert("null")
+        }
+    }
+</script>
+</html>

@@ -10,9 +10,11 @@
     <script src="/pages/js/jquery-1.8.0.min.js" type="text/javascript" charset="UTF-8"></script>
 
 </head>
-<body ontouchstart=""
-      data-noaplus=""
-      style="font-size: 12px;"
+<script src="/pages/js/jquery-1.8.0.min.js"
+        type="text/javascript"
+        charset="UTF-8"></script>
+
+<body style="font-size: 12px;"
       data-spm="13687468">
 <div class="app-3Rse1">
     <header class="ElemeHeader-root_lOpLxr-_0">
@@ -54,36 +56,12 @@
             url: "http://localhost:8080/getUser-address",
 
             success: function (res) {
+                alert(res.toString())
                 // alert("加载数据");
                 if (res.state === 200) {
                     console.log(res.data.address)
 
-                    // var divs = "        <div class=\"addressview\">\n" +
-                    //     "            <div data-v-5d8557c1=\"\" class=\"address\">\n" +
-                    //     "                <div data-v-5d8557c1=\"\" class=\"addresscard\"><!---->\n" +
-                    //     "                    <div data-v-5d8557c1=\"\" class=\"addresscard-body\"><p data-v-5d8557c1=\"\" class=\"addresscard-title\">\n" +
-                    //     "                        <span data-v-5d8557c1=\"\" class=\"username\">" +
-                    //     res.data.username +
-                    //     "</span><!----><span\n" +
-                    //     "                            data-v-5d8557c1=\"\">15620689922</span></p>\n" +
-                    //     "                        <p data-v-5d8557c1=\"\" class=\"addresscard-address\"><span data-v-5d8557c1=\"\" content=\"未选择\"\n" +
-                    //     "                                                                                class=\"address-tag-2HUG1\">" +
-                    //     "</span><span\n" +
-                    //     "                                data-v-5d8557c1=\"\" class=\"address-text\">\n" +
-                    //     res.data.address+
-                    // "      </span></p></div>\n" +
-                    // "                    <div data-v-5d8557c1=\"\" class=\"addresscard-edit\">\n" +
-                    // "                        <svg data-v-5d8557c1=\"\">\n" +
-                    // "                            <use data-v-5d8557c1=\"\" xlink:href=\"#edit\"></use>\n" +
-                    // "                        </svg>\n" +
-                    // "                        <svg data-v-5d8557c1=\"\">\n" +
-                    // "                            <use data-v-5d8557c1=\"\" xlink:href=\"#delete\"></use>\n" +
-                    // "                        </svg>\n" +
-                    // "                    </div>\n" +
-                    // "                </div>\n" +
-                    // "            </div>\n" +
-                    // "\n" +
-                    // "        </div>\n"
+
                     var divs = res.data.address;
                     var divs = divs.split("[")[1]
                     var divs = divs.split("]")[0]

@@ -63,9 +63,9 @@
             outline: none;
         }
     </style>
-    <link href="my/orderCreate_files/spa.js" rel="preload" as="script">
+    <link href="test/orderCreate_files/spa.js" rel="preload" as="script">
     <link rel="icon" href="https://fe.imdada.cn/panda/1.0.0/images/favicon.ico">
-    <link href="my/orderCreate_files/app.3316c9c0.css" rel="stylesheet">
+    <link href="test/orderCreate_files/app.3316c9c0.css" rel="stylesheet">
     <style type="text/css">
         .app-content[data-v-b3e2112a] {
             overflow: auto;
@@ -935,7 +935,7 @@
         }</style>
 </head>
 <script src="/pages/js/jquery-1.8.0.min.js"
-        type="text/javascript"
+        type="javascript"
         charset="UTF-8">
 </script>
 <body>
@@ -959,7 +959,7 @@
            </div>
            <div
                    data-v-92511018="" class="address-item-sender large-pd">
-               <img data-v-92511018="" src="my/orderCreate_files/sender.png" class="addr-img">
+               <img data-v-92511018="" src="test/orderCreate_files/sender.png" class="addr-img">
                <div data-v-92511018="" class="flex address-c flex-align-middle">
                    <div data-v-92511018="">
                        <div data-v-92511018="" class="text-lg-jd text-grey-lighter">从哪里取件?</div>
@@ -975,9 +975,9 @@
                <div  data-v-92511018="" class="address-middle">
                    <div data-v-92511018="" class="br">  </div> <img
                    data-v-92511018=""
-                   src="my/orderCreate_files/toggle.png"></div> <div
+                   src="test/orderCreate_files/toggle.png"></div> <div
                    data-v-92511018="" class="address-item-receiver"><img data-v-92511018=""
-                                                                         src="my/orderCreate_files/receiver.png"
+                                                                         src="test/orderCreate_files/receiver.png"
                                                                          class="addr-img"> <div data-v-92511018=""
                                                                                                 class="flex address-c flex-align-middle"><div
                    data-v-92511018=""><div data-v-92511018="" class="text-lg-jd text-grey-lighter">要寄到哪里?</div> <div
@@ -1194,15 +1194,14 @@
 </body>
 <script type="text/javascript">
     function mycreateOrder() {
-        alert("hhhh")
+
         var order = {};
         order.startPoint = document.getElementById("startPoint").value;
         order.endPoint = document.getElementById("endPoint").value;
         order.orderType = document.getElementById("object-type").value;
         order.weight = document.getElementById("object-weight").value;
         order.price = document.getElementById("price").innerHTML;
-        alert("order."+order.price)
-        alert(document.getElementById("price").innerHTML)
+
         order.orderInfo = document.getElementById("orderInfo").value;
         // console.log(order.startPoint)
         // for (const orderKey in order) {

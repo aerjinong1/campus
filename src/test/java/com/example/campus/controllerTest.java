@@ -2,7 +2,7 @@ package com.example.campus;
 
 import com.alibaba.fastjson2.JSON;
 import com.example.campus.controller.UserController;
-import com.example.campus.controller.orderController;
+import com.example.campus.controller.OrderController;
 import com.example.campus.entity.Orders;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.HttpSession;
@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.mock.web.MockHttpSession;
 
-import javax.servlet.http.HttpSessionContext;
 import java.util.Date;
 import java.util.Enumeration;
 
@@ -20,7 +19,7 @@ public class controllerTest {
     @Autowired
     private UserController userController;
     @Autowired
-    private orderController orderController;
+    private OrderController orderController;
     @Test
     public void getall(){
         userController.getall();
@@ -120,5 +119,10 @@ public class controllerTest {
             }
         }, JSON.toJSONString(orders)        );
 
+    }
+
+    @Test
+    public void getorderList(){
+        System.out.println(orderController.getordersList(0));
     }
 }

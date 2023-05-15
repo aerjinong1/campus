@@ -10,11 +10,10 @@ import java.util.List;
 
 @Mapper
 public interface OrderMapper extends BaseMapper<Orders>{
-    List<Orders> getallorder();
+    List<Orders> getordersList(int start,int end);
 
     Integer createOrders(String startPoint, String endPoint, int price, String orderInfo, Date createTime, int several);
 
     Orders getOrdersByOrderId(int orderId);
-
 
 }

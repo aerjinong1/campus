@@ -3,7 +3,6 @@ package com.example.campus.controller;
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
 import com.example.campus.entity.Orders;
-import com.example.campus.entity.User;
 import com.example.campus.service.impl.OrdersServiceImpl;
 import com.example.campus.util.JsonResult;
 import io.jsonwebtoken.Claims;
@@ -16,10 +15,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.List;
 
 
 @Controller
-public class orderController extends BaseController{
+public class OrderController extends BaseController{
     public static final int OK = 200;
 
     @Value("${jwt.secretKey}")
@@ -37,7 +37,7 @@ public class orderController extends BaseController{
 
     @RequestMapping("createOrders")
     @ResponseBody
-    public JsonResult<User> createOrders(HttpSession session, @RequestBody String orders){
+    public JsonResult<Orders> createOrders(HttpSession session, @RequestBody String orders){
 
         System.out.println(orders+"=============");
         JSONObject jsonObject = JSON.parseObject(orders);
@@ -59,7 +59,7 @@ public class orderController extends BaseController{
 
 
 
-        return new JsonResult<User>(OK);
+        return new JsonResult<Orders>(OK);
     }
 
     private static Orders jsonToOrders(String strOrders){
@@ -83,6 +83,16 @@ public class orderController extends BaseController{
         orders.setPrice(i);
         orders.setOrderInfo((String) jsonObject.get("orderInfo"));
         orders.setSeveral(2);
+        return orders;
+    }
+
+    @RequestMapping("get-ordersList")
+    @ResponseBody
+    public List<Orders> getordersList(int from){
+        from=0;
+        System.out.println("nihao++++++++++");
+        List<Orders> orders = ordersService.getordersList(from);
+        System.out.println(orders.toString()+"controller");
         return orders;
     }
 }

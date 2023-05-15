@@ -37,10 +37,10 @@ public class mapperTest {
     public void addaddress(){
         System.out.println(userMapper.addUserAddress(1223,"天津市津南区S113(外环南路)海天南苑13号楼13号楼5楼502见党旗"));
     }
-    @Test
-    public void orderGetall(){
-        System.out.println(orderMapper.getallorder());
-    }
+//    @Test
+//    public void orderGetall(){
+//        System.out.println(orderMapper.getordersList(1,2));
+//    }
     @Test
     public void getOrderByid(){
 
@@ -53,5 +53,10 @@ public class mapperTest {
         TimeZone.setDefault(timeZone);
         System.out.println("修改后："+new Date());
         orderMapper.createOrders("tjs","jnq",12,"guizhongwp",new Date(),2);
+    }
+
+    @Test
+    public void getordersList(){
+        System.out.println(orderMapper.getordersList(2,1)+"123");
     }
 }

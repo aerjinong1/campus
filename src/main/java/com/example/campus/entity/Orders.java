@@ -21,5 +21,6 @@ public class Orders {
     private String endPoint;
     private String orderType;
     private String weight;
+    private Integer status;
 
 }

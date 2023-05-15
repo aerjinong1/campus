@@ -64,9 +64,9 @@
             outline: none;
         }
     </style>
-    <link href="my/orderCreate_files/spa.js" rel="preload" as="script">
+    <link href="test/orderCreate_files/spa.js" rel="preload" as="script">
     <link rel="icon" href="https://fe.imdada.cn/panda/1.0.0/images/favicon.ico">
-    <link href="my/orderCreate_files/app.3316c9c0.css" rel="stylesheet">
+    <link href="test/orderCreate_files/app.3316c9c0.css" rel="stylesheet">
     <style type="text/css">
         .app-content[data-v-b3e2112a] {
             overflow: auto;
@@ -416,7 +416,8 @@
 
         .tui-shong1[data-v-5dbf43ef] {
             left: -1rem;
-        }</style>
+        }
+    </style>
     <style type="text/css">
         .lemon-cell[data-v-36862e7a] .flex {
             margin-left: 0;
@@ -445,7 +446,8 @@
         .coupon-text[data-v-36862e7a] {
             font-size: 1.1667rem;
             color: #bcc1cc;
-        }</style>
+        }
+    </style>
     <style type="text/css">
         .icon[data-v-160b6817] {
             background-image: -webkit-gradient(linear, left bottom, left top, from(#5bacff), to(#317dfe));
@@ -482,7 +484,8 @@
             align-items: center;
             font-size: 1rem;
             color: #8999b4;
-        }</style>
+        }
+    </style>
     <style type="text/css"></style>
     <style type="text/css">
         .lemon-cell[data-v-0db6e02c] .flex {
@@ -935,15 +938,128 @@
             padding: 1.25rem;
         }</style>
 </head>
-<script src="/pages/js/jquery-1.8.0.min.js"
-        type="text/javascript"
-        charset="UTF-8">
-</script>
+<script src="/pages/js/jquery-1.8.0.min.js" type="text/javascript" charset="UTF-8"></script>
+
 <body>
-<div
-        data-v-1c8857ca="" class="card-custom card-shadow">
-    sdfaaaaaaaaaaa
+<div id="acceptList" data-v-1c8857ca="" >
+
 </div>
+<div data-v-1c8857ca="" class="card-custom card-shadow" id="orderid" onclick="showdetail(this.id)">
+    <div class="orderid" onclick="showdetail(this.class)">取货地址 <img class="sdsd" src="./img/icons/detail.png" alt=""
+                                                                        width="10" onclick="showdetail(this.class)">
+    </div>
+    <div class="orderid">订单信息</div>
+    <div class="orderid">物品重量</div>
+    <div class="orderid">订单价格</div>
+    <div class="orderid">送货地址</div>
+    <main>
+        <button class="kkk" id="123" onclick="getClickID(this.className)">First Button</button>
+        <button id="456" onclick="getClickID(this.id)">Second Button</button>
+        <button id="qwe" onclick="getClickID(this.id)">Third Button</button>
+    </main>
+</div>
+<div class="card-shadow">
+    上一页
+    <pages id="pages">1&nbsp;2</pages>
+    下一页
+</div>
+<script>
+    function showdetail(classes) {
+        // location.href="./orderCreate.html"
+        // alert("hhhh")
+        $.ajax({
+            type: 'GET',
+            dataType: "JSON",
+            url: "http://localhost:8080/getOrdersByOrderId",
+            data: "from=1",
+            success: function (res) {
+                // alert("加载数据");
+                // console.log(res[1].toString+"           res")
+                // console.log(res[1].toString()+"           res")
+                console.log(res[3].startPoint+"           res")
+
+
+
+            },
+            error: function (res) {
+                alert(res.state)
+                alert("发生错误");
+            }
+        });
+        console.log(classes)
+    }
+</script>
+<script type="text/javascript">
+    function getClickID(clickID) {
+        alert(clickID);
+        console.log(window.location.href + "1")
+    }
+</script>
+
+<script>
+
+
+    function initData() {
+        target = window.location.href.split("?from=")[1]
+        console.log(target)
+        const from = window.location.href
+        // alert("success")
+        // alert("hhhh")
+        $.ajax({
+            type: 'GET',
+            dataType: "JSON",
+            url: "http://localhost:8080/get-ordersList",
+            data: "from=1",
+            success: function (res) {
+                // alert("加载数据");
+                // console.log(res[1].toString+"           res")
+                // console.log(res[1].toString()+"           res")
+                console.log(res[3].startPoint+"           res")
+
+                for (let i = 0; i < res.length; i++) {
+
+
+                    // alert(targetKey.toString())
+                    const target = document.getElementById("acceptList");
+                    target.innerHTML +=
+                       '<div data-v-1c8857ca="" class="card-custom card-shadow"  className="card-custom card-shadow" id="'+res[i].orderId+'"'
+                  +     '      onClick="showdetail(this.id)">'
+                  +     '    <div className="orderid" onClick="showdetail(this.id)">'+res[i].orderId+' <img className="sdsd"'
+                  +     'src="./img/icons/detail.png"'
+                  +     'alt=""'
+                  +     'width="10"'
+                  +     'onClick="showdetail(this.class)">'
+                  +     '     </div>'
+                  +     '     <div className="orderid">'+res[i].startPoint+'</div>'
+                  +     '     <div className="orderid">'+res[i].weight+'</div>'
+                  +     '     <div className="orderid">'+res[i].price+'</div>'
+                  +     '     <div className="orderid">'+res[i].endPoint+'</div>'
+                  +     ' </div>'
+                }
+
+
+                if (res.state === 200) {
+                    // alert("200")
+                    alert(res.data)
+
+                } else {
+                    alert("用户信息不合法，或邮箱已被占用");
+                }
+            },
+            error: function (res) {
+                alert(res.state)
+                alert("发生错误");
+            }
+        });
+    }
+</script>
+<script>
+    $(window).load(function () {
+        initData()
+    });
+
+</script>
 
 </body>
+
 </html>

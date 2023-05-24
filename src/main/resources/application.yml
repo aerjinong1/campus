@@ -5,6 +5,16 @@ spring:
     username: wxz
     password: 123456
     driver-class-name: com.mysql.cj.jdbc.Driver
+  data:
+    redis:
+      host: 127.0.0.1
+      port: 6379
+    elasticsearch:
+      repositories:
+        enabled: true
+        port: 9200
+        host: 192.168.56.1
+
 mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

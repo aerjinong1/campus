@@ -52,7 +52,7 @@ public class mapperTest {
         TimeZone timeZone=TimeZone.getTimeZone("ETC?GMT-8");
         TimeZone.setDefault(timeZone);
         System.out.println("修改后："+new Date());
-        orderMapper.createOrders("tjs","jnq",12,"guizhongwp",new Date(),2);
+        orderMapper.createOrders("tjs","jnq",12,"redisOfTask",new Date(),2);
     }
 
     @Test

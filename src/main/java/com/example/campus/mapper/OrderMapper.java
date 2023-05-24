@@ -16,4 +16,6 @@ public interface OrderMapper extends BaseMapper<Orders>{
 
     Orders getOrdersByOrderId(int orderId);
 
+    List<Orders> getAllByStatusOrders();
+
 }

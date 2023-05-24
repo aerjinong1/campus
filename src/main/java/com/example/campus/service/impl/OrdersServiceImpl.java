@@ -26,8 +26,8 @@ public class OrdersServiceImpl implements OrdersService {
     }
 
     @Override
-    public List<Orders> getordersList(int from) {
-        List<Orders> orders = orderMapper.getordersList(from,5);
+    public List<Orders> getordersList(int pages) {
+        List<Orders> orders = orderMapper.getordersList(pages,5);
         return orders;
     }
 

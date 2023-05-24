@@ -56,6 +56,7 @@ public class controllerTest {
         orders.setOrderInfo("23w");
         orders.setCreateTime(new Date());
         orders.setSeveral(333);
+        System.out.println(orders.toString());
         orderController.createOrders(
                 new HttpSession() {
             @Override
@@ -120,6 +121,7 @@ public class controllerTest {
         }, JSON.toJSONString(orders)        );
 
     }
+
 
     @Test
     public void getorderList(){

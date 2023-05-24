@@ -1223,6 +1223,7 @@
             async: true,    //默认是true：异步，false：同步。
             success: function (data) {
                 callback(data);
+                window.location.href="./myInfo.html"
             },
             error: function (data) {
                 layer.msg('请求异常');

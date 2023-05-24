@@ -29,6 +29,10 @@
     <select id="getordersList" resultType="com.example.campus.entity.Orders">
         select * from orders where status = 0 limit #{start},#{end}
     </select>
+    <select id="getAllByStatusOrders" resultType="com.example.campus.entity.Orders">
+        select *
+        from orders where status = 0;
+    </select>
 
 
 </mapper>

@@ -2,22 +2,44 @@ package com.example.campus;
 
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
+import com.example.campus.entity.Orders;
+import com.example.campus.entity.User;
+import com.example.campus.util.RedisUtils;
+import com.example.campus.util.RedisUtils1;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwsHeader;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.io.IOException;
+import java.util.*;
 
+import jakarta.annotation.Resource;
+import org.elasticsearch.client.RequestOptions;
+import org.elasticsearch.client.RestHighLevelClient;
+import org.elasticsearch.client.indices.CreateIndexRequest;
+import org.elasticsearch.client.indices.CreateIndexResponse;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.SpringBootVersion;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.SpringVersion;
+import org.springframework.data.redis.core.RedisTemplate;
 
+@SpringBootTest
 //@PropertySource("classpath:application.yml")
 public class test {
+
+    @Autowired
+    private RestHighLevelClient restHighLevelClient;
+
+    @Autowired
+    @Qualifier("redisUtils1")
+    private RedisUtils1 redisUtils1;
     @Value("${jwt.secretKey}")
     private String secret;
 
@@ -83,15 +105,89 @@ public class test {
     }
 
     @Test
-    public void jsonSwitchString(){
+    public void jsonSwitchString() {
         String st = "{\"startPoint\":\"ewr\",\"endPoint\":\"wf\",\"orderType\":\"外卖\",\"weight\":\"1到3kg\",\"price\":\"1到3kg\",\"orderInfo\":\"re\"}";
         JSONObject jsonObject = JSON.parseObject(st);
+
 //        System.out.println(jsonObject.get("startPoint"));
         System.out.println(jsonObject.toString());
 
     }
 
-    @Test public void sss(){
+    @Test
+    public void sss() {
         System.out.println(new Date());
     }
+
+    @Test
+    public void redistest() {
+        List<Object> orderList = redisUtils1.lRange("orderList", 5, 9);//从redis获取指定范围5个order
+        for (int i = 0; i < orderList.size(); i++) {
+            System.out.println(orderList.get(i));
+        }
+
+//        for (int i = 0; i < 10; i++) {
+//            Orders orders =new Orders();
+//            orders.setOrderId(i);
+//            orders.setStartPoint("asdf");
+//            orders.setEndPoint("wer");
+//            orders.setPrice(32123);
+//            orders.setOrderInfo("23w");
+//            orders.setCreateTime(new Date());
+//            orders.setSeveral(333);
+////            System.out.println(JSON.toJSON(orders));
+//            redisUtils1.lPush("orderList",orders);
+//        }
+//        System.out.println(redisUtils1.lRange("orderList", 0, -1));
+//        List<Object> orderList = redisUtils1.lRange("orderList", 0, 2);
+//        for (int i = 0; i < orderList.size(); i++) {
+//            Orders orders = (Orders) orderList.get(i);
+//            System.out.println(orders);
+//        }
+//        System.out.println(orders.toString());
+//        redisTemplate.opsForValue().set("orderid"+orders.getOrderId(),JSON.toJSON(orders));
+//        redisUtils.lLeftPush("orderid"+orders.getOrderId(), JSON.toJSON(orders).toString());
+
+    }
+
+    //    @Test
+//    public void contextloads(){
+//        User user = new User();
+//        user.setListId("[]");
+//        user.setStuName("wxz");
+//        user.setGender(1);
+//        user.setAge(19);
+//        user.setPassword("123");
+//        user.setEmail("@qq.com");
+//        redisTemplate.opsForValue().set("nihao",new User());
+//        System.out.println(redisTemplate.opsForValue().get("nihao"));
+//    }
+//    @Test
+//    public void test1(){
+//        User user = new User();
+//        user.setListId("[]");
+//        user.setStuName("wxz");
+//        user.setGender(1);
+//        user.setAge(19);
+//        user.setPassword("123");
+//        user.setEmail("@qq.com");
+//        redisTemplate.opsForValue().set("nihao",new User());
+//        System.out.println(redisTemplate.opsForValue().get("all"));
+//        System.out.println(redisTemplate.opsForValue().get("nihao"));
+//    }
+    @Test
+    public void estest() throws IOException {
+        System.out.println("test1");
+
+        CreateIndexRequest request = new CreateIndexRequest("tute");
+        CreateIndexResponse response = restHighLevelClient.indices().create(request, RequestOptions.DEFAULT);
+        System.out.println(response);
+
+    }
+    @Test
+    public void res(){
+        System.out.println(SpringVersion.getVersion()+"springVersion");
+        System.out.println(SpringBootVersion.getVersion()+"springBootVersion");
+    }
+
 }

@@ -959,27 +959,24 @@
     </main>
 </div>
 <div class="card-shadow">
-    上一页
+    <button onclick="previouspages()">上一页</button>
     <pages id="pages">1&nbsp;2</pages>
-    下一页
+    <button onclick="nextpages()">下一页</button>
 </div>
 <script>
     function showdetail(classes) {
         // location.href="./orderCreate.html"
         // alert("hhhh")
+
         $.ajax({
             type: 'GET',
             dataType: "JSON",
             url: "http://localhost:8080/getOrdersByOrderId",
-            data: "from=1",
             success: function (res) {
                 // alert("加载数据");
                 // console.log(res[1].toString+"           res")
                 // console.log(res[1].toString()+"           res")
                 console.log(res[3].startPoint+"           res")
-
-
-
             },
             error: function (res) {
                 alert(res.state)
@@ -987,6 +984,23 @@
             }
         });
         console.log(classes)
+    }
+</script>
+<script>
+    var pages = window.location.href.split("pages=")[1];
+    pages = parseInt(pages)
+
+    function previouspages(){
+        if (pages>0){
+            pages=pages-1
+            window.location.href="./acceptOrders.html?pages="+pages;
+        }
+    }
+    function nextpages(){
+        console.log(pages)
+        console.log(pages+1)
+        pages=pages+1
+        window.location.href="./acceptOrders.html?pages="+pages;
     }
 </script>
 <script type="text/javascript">
@@ -1001,49 +1015,46 @@
 
     function initData() {
         target = window.location.href.split("?from=")[1]
-        console.log(target)
-        const from = window.location.href
+        pages = location.href
+        pages = pages.split("?pages=")[1]
+        pages = parseInt(pages)
         // alert("success")
         // alert("hhhh")
         $.ajax({
             type: 'GET',
             dataType: "JSON",
             url: "http://localhost:8080/get-ordersList",
-            data: "from=1",
+            data: "pages="+pages,
             success: function (res) {
                 // alert("加载数据");
                 // console.log(res[1].toString+"           res")
                 // console.log(res[1].toString()+"           res")
-                console.log(res[3].startPoint+"           res")
+                // console.log(res[3].startPoint+"           res")
+                if (res.length>0){
+                    for (let i = 0; i < res.length; i++) {
+                        console.log(res.length+"     length")
 
-                for (let i = 0; i < res.length; i++) {
+                        // alert(targetKey.toString())
+                        const target = document.getElementById("acceptList");
+                        target.innerHTML +=
+                            '<div data-v-1c8857ca="" class="card-custom card-shadow"  className="card-custom card-shadow" id="'+res[i].orderId+'"'
+                            +     '      onClick="showdetail(this.id)">'
+                            +     '    <div className="orderid" onClick="showdetail(this.id)">'+res[i].orderId+' <img className="sdsd"'
+                            +     'src="./img/icons/detail.png"'
+                            +     'alt=""'
+                            +     'width="10"'
+                            +     'onClick="showdetail(this.class)">'
+                            +     '     </div>'
+                            +     '     <div className="orderid">'+res[i].startPoint+'</div>'
+                            +     '     <div className="orderid">'+res[i].weight+'</div>'
+                            +     '     <div className="orderid">'+res[i].price+'</div>'
+                            +     '     <div className="orderid">'+res[i].endPoint+'</div>'
+                            +     ' </div>'
+                    }
 
-
-                    // alert(targetKey.toString())
-                    const target = document.getElementById("acceptList");
-                    target.innerHTML +=
-                       '<div data-v-1c8857ca="" class="card-custom card-shadow"  className="card-custom card-shadow" id="'+res[i].orderId+'"'
-                  +     '      onClick="showdetail(this.id)">'
-                  +     '    <div className="orderid" onClick="showdetail(this.id)">'+res[i].orderId+' <img className="sdsd"'
-                  +     'src="./img/icons/detail.png"'
-                  +     'alt=""'
-                  +     'width="10"'
-                  +     'onClick="showdetail(this.class)">'
-                  +     '     </div>'
-                  +     '     <div className="orderid">'+res[i].startPoint+'</div>'
-                  +     '     <div className="orderid">'+res[i].weight+'</div>'
-                  +     '     <div className="orderid">'+res[i].price+'</div>'
-                  +     '     <div className="orderid">'+res[i].endPoint+'</div>'
-                  +     ' </div>'
-                }
-
-
-                if (res.state === 200) {
-                    // alert("200")
-                    alert(res.data)
-
-                } else {
-                    alert("用户信息不合法，或邮箱已被占用");
+                }else {
+                    alert("再找也没有了")
+                    previouspages()
                 }
             },
             error: function (res) {

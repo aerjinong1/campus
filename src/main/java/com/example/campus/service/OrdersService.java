@@ -10,7 +10,7 @@ public interface OrdersService {
 
     int createOrders(Orders orders);
 
-
+    void acceptOrder(int ordersId,int userId);
 
     List getordersList(int from);
 }

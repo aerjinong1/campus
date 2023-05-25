@@ -26,6 +26,11 @@ public class OrdersServiceImpl implements OrdersService {
     }
 
     @Override
+    public void acceptOrder(int ordersId, int postmanId) {
+        orderMapper.acceptOrder(ordersId,postmanId);
+    }
+
+    @Override
     public List<Orders> getordersList(int pages) {
         List<Orders> orders = orderMapper.getordersList(pages,5);
         return orders;

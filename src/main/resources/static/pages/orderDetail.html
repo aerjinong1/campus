@@ -4,7 +4,84 @@
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
-<body>
+<script src="/pages/js/jquery-1.8.0.min.js" type="text/javascript" charset="UTF-8"></script>
 
+<body>
+<h3>订单详情</h3>
+<div id="orderDetile"></div>
 </body>
+<script>
+    function showdetail(id) {
+        var targetId=id
+        console.log(id)
+        console.log("targetid     "+targetId)
+        $.ajax({
+            type: 'GET',
+            dataType: "JSON",
+            data: "ordersId="+targetId,
+            url: "http://localhost:8080/getOrdersByOrderId",
+
+            success: function (res) {
+                const target = document.getElementById("orderDetile");
+                target.innerHTML +=
+                    '<div data-v-1c8857ca="" class="card-custom card-shadow"  className="card-custom card-shadow" id="'+res.data.orderId+'"'
+                    +     '      >'
+                    +     '    <div className="orderid" >订单号：'+res.data.orderId
+                    +     '     </div>'
+                    +     '     <div className="orderid">起点：'+res.data.startPoint+'</div>'
+                    +     '     <div className="orderid">重量：'+res.data.weight+'</div>'
+                    +     '     <div className="orderid">价格：'+res.data.price+'</div>'
+                    +     '     <div className="orderid">个数：'+res.data.several+'</div>'
+                    +     '     <div className="orderid">终点：'+res.data.endPoint+'</div>'
+                    +     '     <div className="orderid">货物名称：'+res.data.orderName+'</div>'
+                    +     '     <div className="orderid">订单信息：'+res.data.orderInfo+'</div>'
+                    +     '     <div className="orderid">创建时间：'+res.data.createTime+'</div>'
+                    +     '<button onclick="acceptorder(id)">接取订单</button>'
+                    +     ' </div>'
+            },
+            error: function (res) {
+                alert(res+"error")
+            }
+        });
+        console.log(classes)
+    }
+</script>
+<script>
+    var targetId = location.href.split("=")[1]
+    function acceptorder(id){
+        var confirm1 = confirm("确认接取？");
+        if (confirm1){
+            $.ajax({
+                type: 'GET',
+                dataType: "JSON",
+                data: "ordersId="+targetId,
+                url: "http://localhost:8080/acceptOrder",
+
+                success: function (res) {
+
+                },
+                error: function (res) {
+                    alert(res+"error")
+                }
+        })
+
+    }}
+
+</script>
+<script>
+
+
+    function initData() {
+        var orderid= location.href.split("?orderid=")[1]
+    showdetail(parseInt(orderid))
+    }
+
+</script>
+<script>
+    $(window).load(function () {
+        initData()
+    });
+
+</script>
+
 </html>

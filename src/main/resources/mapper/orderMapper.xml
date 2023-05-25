@@ -17,6 +17,12 @@
     <insert id="createOrders">
             insert into orders (start_point,end_point,price,order_info,create_time,several) VALUES (#{startPoint},#{endPoint},#{price},#{orderInfo},#{createTime},#{several})
     </insert>
+    <update id="acceptOrder">
+        update orders
+        set postman_id = #{postmanId},
+            status = 1
+        where order_id = #{orderId}
+    </update>
 
 
     <select id="getallorder" resultType="com.example.campus.entity.Orders">

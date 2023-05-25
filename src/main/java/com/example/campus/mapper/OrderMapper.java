@@ -18,4 +18,6 @@ public interface OrderMapper extends BaseMapper<Orders>{
 
     List<Orders> getAllByStatusOrders();
 
+    void acceptOrder(int orderId,int postmanId);
+
 }

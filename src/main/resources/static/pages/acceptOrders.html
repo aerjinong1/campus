@@ -944,43 +944,27 @@
 <div id="acceptList" data-v-1c8857ca="" >
 
 </div>
-<div data-v-1c8857ca="" class="card-custom card-shadow" id="orderid" onclick="showdetail(this.id)">
-    <div class="orderid" onclick="showdetail(this.class)">取货地址 <img class="sdsd" src="./img/icons/detail.png" alt=""
-                                                                        width="10" onclick="showdetail(this.class)">
-    </div>
-    <div class="orderid">订单信息</div>
-    <div class="orderid">物品重量</div>
-    <div class="orderid">订单价格</div>
-    <div class="orderid">送货地址</div>
-    <main>
-        <button class="kkk" id="123" onclick="getClickID(this.className)">First Button</button>
-        <button id="456" onclick="getClickID(this.id)">Second Button</button>
-        <button id="qwe" onclick="getClickID(this.id)">Third Button</button>
-    </main>
-</div>
 <div class="card-shadow">
     <button onclick="previouspages()">上一页</button>
     <pages id="pages">1&nbsp;2</pages>
     <button onclick="nextpages()">下一页</button>
 </div>
 <script>
-    function showdetail(classes) {
-        // location.href="./orderCreate.html"
-        // alert("hhhh")
-
+    function showdetail(id) {
+        var targetId=id
+        console.log(id)
+        console.log("targetid     "+targetId)
+        location.href="./orderDetail.html?orderid="+id
         $.ajax({
             type: 'GET',
             dataType: "JSON",
+            data: "ordersId="+targetId,
             url: "http://localhost:8080/getOrdersByOrderId",
+
             success: function (res) {
-                // alert("加载数据");
-                // console.log(res[1].toString+"           res")
-                // console.log(res[1].toString()+"           res")
-                console.log(res[3].startPoint+"           res")
             },
             error: function (res) {
-                alert(res.state)
-                alert("发生错误");
+               alert(res+"error")
             }
         });
         console.log(classes)
@@ -1011,8 +995,6 @@
 </script>
 
 <script>
-
-
     function initData() {
         target = window.location.href.split("?from=")[1]
         pages = location.href
@@ -1039,11 +1021,11 @@
                         target.innerHTML +=
                             '<div data-v-1c8857ca="" class="card-custom card-shadow"  className="card-custom card-shadow" id="'+res[i].orderId+'"'
                             +     '      onClick="showdetail(this.id)">'
-                            +     '    <div className="orderid" onClick="showdetail(this.id)">'+res[i].orderId+' <img className="sdsd"'
+                            +     '    <div className="orderid" >'+res[i].orderId+' <img className="sdsd"'
                             +     'src="./img/icons/detail.png"'
                             +     'alt=""'
                             +     'width="10"'
-                            +     'onClick="showdetail(this.class)">'
+                            +     '>'
                             +     '     </div>'
                             +     '     <div className="orderid">'+res[i].startPoint+'</div>'
                             +     '     <div className="orderid">'+res[i].weight+'</div>'
@@ -1059,7 +1041,7 @@
             },
             error: function (res) {
                 alert(res.state)
-                alert("发生错误");
+                alert("发生错误?");
             }
         });
     }

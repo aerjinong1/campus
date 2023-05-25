@@ -92,7 +92,20 @@ public class UserController extends BaseController {
 
 
     }
+    public User getUserFromJWT(HttpSession session){
+        String jwtToken = (String) session.getAttribute("jwtToken");
+        Claims claims = Jwts
+                .parser()
+                .setSigningKey(secrets)
+                .parseClaimsJws(jwtToken)
+                .getBody();
+        System.out.println(claims + "+++++++++");
+        int userId = (Integer) claims.get("id");
+        User user = userService.getUserInfo(userId);
 
+
+        return  user;
+    }
     @RequestMapping("getUserInfo")
     @ResponseBody
     public JsonResult<User> getUserInfo(HttpSession session) {

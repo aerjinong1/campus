@@ -3,7 +3,9 @@ package com.example.campus.controller;
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
 import com.example.campus.entity.Orders;
+import com.example.campus.entity.User;
 import com.example.campus.service.impl.OrdersServiceImpl;
+import com.example.campus.service.impl.UserServiceImpl;
 import com.example.campus.util.JsonResult;
 import com.example.campus.util.RedisUtils1;
 import io.jsonwebtoken.Claims;
@@ -26,6 +28,9 @@ public class OrderController extends BaseController{
     @Autowired
     @Qualifier("redisUtils1")
     private RedisUtils1 redisUtils1;
+
+    @Autowired
+    private UserServiceImpl userService;
     public static final int OK = 200;
 
     @Value("${jwt.secretKey}")
@@ -34,11 +39,38 @@ public class OrderController extends BaseController{
     @Autowired
     private OrdersServiceImpl ordersService;
 
+    public User getUserFromJWT(HttpSession session){
+        String jwtToken = (String) session.getAttribute("jwtToken");
+        Claims claims = Jwts
+                .parser()
+                .setSigningKey(secrets)
+                .parseClaimsJws(jwtToken)
+                .getBody();
+        System.out.println(claims + "+++++++++");
+        int userId = (Integer) claims.get("id");
+        User user = userService.getUserInfo(userId);
+
+
+        return  user;
+    }
+
     @RequestMapping("getOrdersByOrderId")
     @ResponseBody
     public JsonResult<Orders> getOrdersByOrderId(int ordersId){
-        Orders res = ordersService.getOrdersByOrderId(ordersId);
-        return new JsonResult<Orders>(OK,res);
+        Orders orders = (Orders) redisUtils1.get("order:" + ordersId);
+
+        if (orders==null){
+            Orders res = ordersService.getOrdersByOrderId(ordersId);
+            System.out.println("redis中没有订单，前往数据库查找");
+            redisUtils1.set("order:"+ordersId,res);
+
+            return new JsonResult<Orders>(OK,orders);
+        }else {
+            System.out.println("以从redis查询到");
+            return new JsonResult<Orders>(OK,orders);
+        }
+
+
     }
 
     @RequestMapping("createOrders")
@@ -97,5 +129,14 @@ public class OrderController extends BaseController{
 //        orders = ordersService.getordersList(pages*5);
 //        System.out.println(orders.toString()+"controller");
         return orders;
+    }
+    @RequestMapping("acceptOrder")
+    @ResponseBody
+    public void acceptOrder(int ordersId,HttpSession session){
+        User user = getUserFromJWT(session);
+        redisUtils1.remove("order:" + ordersId);
+        ordersService.acceptOrder(ordersId,user.getUserId());
+        Orders res = ordersService.getOrdersByOrderId(ordersId);
+        redisUtils1.set("order:"+ordersId,res);
     }
 }

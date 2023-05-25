@@ -35,9 +35,6 @@ import org.springframework.data.redis.core.RedisTemplate;
 public class test {
 
     @Autowired
-    private RestHighLevelClient restHighLevelClient;
-
-    @Autowired
     @Qualifier("redisUtils1")
     private RedisUtils1 redisUtils1;
     @Value("${jwt.secretKey}")
@@ -175,15 +172,7 @@ public class test {
 //        System.out.println(redisTemplate.opsForValue().get("all"));
 //        System.out.println(redisTemplate.opsForValue().get("nihao"));
 //    }
-    @Test
-    public void estest() throws IOException {
-        System.out.println("test1");
 
-        CreateIndexRequest request = new CreateIndexRequest("tute");
-        CreateIndexResponse response = restHighLevelClient.indices().create(request, RequestOptions.DEFAULT);
-        System.out.println(response);
-
-    }
     @Test
     public void res(){
         System.out.println(SpringVersion.getVersion()+"springVersion");

@@ -57,6 +57,11 @@ public class mapperTest {
 
     @Test
     public void getordersList(){
+
         System.out.println(orderMapper.getordersList(2,1)+"123");
+    }
+    @Test
+    public void acceptOrders(){
+        orderMapper.acceptOrder(17,15);
     }
 }

@@ -11,6 +11,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import jakarta.websocket.SessionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.system.ApplicationHome;
@@ -21,6 +22,7 @@ import java.io.File;
 import java.util.*;
 import java.util.Base64.Encoder;
 import java.util.Base64.Decoder;
+
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
@@ -69,7 +71,7 @@ public class UserController extends BaseController {
         // 载核【Payload】
         Map<String, Object> payload = new HashMap<>();
         payload.put("id", res.getUserId());
-        payload.put("name", "John Doe");
+        payload.put("name", res.getUserName());
         payload.put("admin", true);
 
         // 声明Token失效时间
@@ -92,7 +94,8 @@ public class UserController extends BaseController {
 
 
     }
-    public User getUserFromJWT(HttpSession session){
+
+    public User getUserFromJWT(HttpSession session) {
         String jwtToken = (String) session.getAttribute("jwtToken");
         Claims claims = Jwts
                 .parser()
@@ -104,8 +107,9 @@ public class UserController extends BaseController {
         User user = userService.getUserInfo(userId);
 
 
-        return  user;
+        return user;
     }
+
     @RequestMapping("getUserInfo")
     @ResponseBody
     public JsonResult<User> getUserInfo(HttpSession session) {
@@ -124,7 +128,7 @@ public class UserController extends BaseController {
     }
 
     @RequestMapping("upload")
-    public String upload(MultipartFile file,HttpSession session){
+    public String upload(MultipartFile file, HttpSession session) {
         System.out.println("upload");
         String jwtToken = (String) session.getAttribute("jwtToken");
         Claims claims = Jwts
@@ -136,38 +140,39 @@ public class UserController extends BaseController {
         int userId = (Integer) claims.get("id");
 
 
-
-        if (file.isEmpty()){
+        if (file.isEmpty()) {
             return "null";
         }
         String originalFilename = file.getOriginalFilename();
 
-        String ext = "."+originalFilename.split("\\.")[1];
-        String uuid = UUID.randomUUID().toString().replace("-","");
-        String filename = uuid+ext;
+        String ext = "." + originalFilename.split("\\.")[1];
+        String uuid = UUID.randomUUID().toString().replace("-", "");
+        String filename = uuid + ext;
         ApplicationHome applicationHome = new ApplicationHome(this.getClass());
-        String path = applicationHome.getDir().getParentFile().getParentFile().getAbsolutePath()+"/src/main/resources/static/pages/img";
+        String path = applicationHome.getDir().getParentFile().getParentFile().getAbsolutePath() + "/src/main/resources/static/pages/img";
 
-        String img = "./img/"+filename;
-        String newpath = path+"/"+filename;
+        String img = "./img/" + filename;
+        String newpath = path + "/" + filename;
         System.out.println(newpath);
 
-        try{
+        try {
             file.transferTo(new File(newpath));
-        }catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
         userService.setImg(img, userId);
         return "http://localhost:8080/pages/accountInfo.html";
     }
+
     @RequestMapping("addaddress")
-    public int addaddress(int userid,String address){
+    public int addaddress(int userid, String address) {
         Integer integer = userService.addAddress(userid, address);
         return integer;
     }
+
     @RequestMapping("getUser-address")
     @ResponseBody
-    public JsonResult<User> getUseraddress(HttpSession session){
+    public JsonResult<User> getUseraddress(HttpSession session) {
         String jwtToken = (String) session.getAttribute("jwtToken");
         System.out.println(jwtToken);
         Claims claims = Jwts
@@ -180,10 +185,17 @@ public class UserController extends BaseController {
         String address = userService.getAddress(userId);
         User user = new User();
         user.setAddress(address);
-        return new JsonResult<User>(OK,user);
+        return new JsonResult<User>(OK, user);
     }
 
+    @RequestMapping("logout")
+    @ResponseBody
+    public JsonResult<User> logout(SessionException request) {
 
+        HttpSession session = (HttpSession) request.getSession();
+        session.invalidate();
+        return new JsonResult<>(OK);
+    }
 
 
 

@@ -181,9 +181,9 @@
                         <input type="submit" value="submit">
                     </form>
                     <img id="userImg"
-                    style="width:50px; height:50px;"
-                    alt=""
-                    src="">
+                         style="width:50px; height:50px;"
+                         alt=""
+                         src="">
                     <!--                    <li class="infoItem itemPosition">-->
                     <!--                        <span class="fontBold">头像</span>-->
                     <!--                        <span class="itemsCenter">-->
@@ -232,22 +232,23 @@
                     </ul>
                 </div>
 
-<!--                <h2 class="infoTitle">安全设置</h2>-->
-<!--                <ul class="infoList">-->
-<!--                    <a href="./login.html">-->
-<!--                        <li class="infoItem">-->
-<!--                            <span>登录密码</span>-->
-<!--                            <span class="infoSection">-->
-<!--									<span class="setButton"-->
-<!--                                          id="password">请先登录</span>-->
-<!--									<img class="arrowSvg"-->
-<!--                                         src="">-->
-<!--								</span>-->
-<!--                        </li>-->
-<!--                    </a>-->
-<!--                </ul>-->
+                <!--                <h2 class="infoTitle">安全设置</h2>-->
+                <!--                <ul class="infoList">-->
+                <!--                    <a href="./login.html">-->
+                <!--                        <li class="infoItem">-->
+                <!--                            <span>登录密码</span>-->
+                <!--                            <span class="infoSection">-->
+                <!--									<span class="setButton"-->
+                <!--                                          id="password">请先登录</span>-->
+                <!--									<img class="arrowSvg"-->
+                <!--                                         src="">-->
+                <!--								</span>-->
+                <!--                        </li>-->
+                <!--                    </a>-->
+                <!--                </ul>-->
                 <button type="button"
-                        class="infoButton">退出登录
+                        class="infoButton"
+                        onclick="logout()">退出登录
                 </button>
             </div>
         </div>
@@ -339,9 +340,16 @@
 <script>
     $(document).ready(function () {
         initData();
+        console.log(document.cookie)
     });
 </script>
+<script>
+    function logout() {
 
+        document.cookie = "cookiename=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT"
+
+    }
+</script>
 </body>
 <div style="all: initial;">
     <div style="all: initial;"

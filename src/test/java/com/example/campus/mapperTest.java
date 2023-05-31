@@ -52,7 +52,7 @@ public class mapperTest {
         TimeZone timeZone=TimeZone.getTimeZone("ETC?GMT-8");
         TimeZone.setDefault(timeZone);
         System.out.println("修改后："+new Date());
-        orderMapper.createOrders("tjs","jnq",12,"redisOfTask",new Date(),2);
+        orderMapper.createOrders(123,"tjs","jnq",12,"redisOfTask",new Date(),2);
     }
 
     @Test
@@ -63,5 +63,10 @@ public class mapperTest {
     @Test
     public void acceptOrders(){
         orderMapper.acceptOrder(17,15);
+    }
+
+    @Test
+    public void getOrdersListByUserId(){
+        System.out.println(orderMapper.getOrdersListByUserId(1223));
     }
 }

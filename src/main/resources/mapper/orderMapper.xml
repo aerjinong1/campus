@@ -15,7 +15,7 @@
 
     </resultMap>
     <insert id="createOrders">
-            insert into orders (start_point,end_point,price,order_info,create_time,several) VALUES (#{startPoint},#{endPoint},#{price},#{orderInfo},#{createTime},#{several})
+            insert into orders (customer,start_point,end_point,price,order_info,create_time,several) VALUES (#{customer},#{startPoint},#{endPoint},#{price},#{orderInfo},#{createTime},#{several})
     </insert>
     <update id="acceptOrder">
         update orders
@@ -38,6 +38,10 @@
     <select id="getAllByStatusOrders" resultType="com.example.campus.entity.Orders">
         select *
         from orders where status = 0;
+    </select>
+    <select id="getOrdersListByUserId" resultType="com.example.campus.entity.Orders">
+        select *
+        from orders where customer = #{userId};
     </select>
 
 

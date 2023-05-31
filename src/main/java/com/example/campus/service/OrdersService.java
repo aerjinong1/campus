@@ -13,4 +13,6 @@ public interface OrdersService {
     void acceptOrder(int ordersId,int userId);
 
     List getordersList(int from);
+
+    List<Orders> getOrdersListByUserId(int userId);
 }

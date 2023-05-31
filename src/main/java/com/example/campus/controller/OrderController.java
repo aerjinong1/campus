@@ -20,11 +20,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
 @Controller
-public class OrderController extends BaseController{
+public class OrderController extends BaseController {
     @Autowired
     @Qualifier("redisUtils1")
     private RedisUtils1 redisUtils1;
@@ -39,7 +40,7 @@ public class OrderController extends BaseController{
     @Autowired
     private OrdersServiceImpl ordersService;
 
-    public User getUserFromJWT(HttpSession session){
+    public User getUserFromJWT(HttpSession session) {
         String jwtToken = (String) session.getAttribute("jwtToken");
         Claims claims = Jwts
                 .parser()
@@ -51,23 +52,23 @@ public class OrderController extends BaseController{
         User user = userService.getUserInfo(userId);
 
 
-        return  user;
+        return user;
     }
 
     @RequestMapping("getOrdersByOrderId")
     @ResponseBody
-    public JsonResult<Orders> getOrdersByOrderId(int ordersId){
+    public JsonResult<Orders> getOrdersByOrderId(int ordersId) {
         Orders orders = (Orders) redisUtils1.get("order:" + ordersId);
 
-        if (orders==null){
+        if (orders == null) {
             Orders res = ordersService.getOrdersByOrderId(ordersId);
             System.out.println("redis中没有订单，前往数据库查找");
-            redisUtils1.set("order:"+ordersId,res);
+            redisUtils1.set("order:" + ordersId, res);
 
-            return new JsonResult<Orders>(OK,orders);
-        }else {
+            return new JsonResult<Orders>(OK, orders);
+        } else {
             System.out.println("以从redis查询到");
-            return new JsonResult<Orders>(OK,orders);
+            return new JsonResult<Orders>(OK, orders);
         }
 
 
@@ -75,14 +76,14 @@ public class OrderController extends BaseController{
 
     @RequestMapping("createOrders")
     @ResponseBody
-    public JsonResult<Orders> createOrders(HttpSession session, @RequestBody String orders){
+    public JsonResult<Orders> createOrders(HttpSession session, @RequestBody String orders) {
 
 
         JSONObject jsonObject = JSON.parseObject(orders);
         Orders orders1 = jsonToOrders(orders);
         ordersService.createOrders(orders1);
         String jwtToken = (String) session.getAttribute("jwtToken");
-        if (jwtToken!=null){
+        if (jwtToken != null) {
             Claims claims = Jwts
                     .parser()
                     .setSigningKey(secrets)
@@ -93,12 +94,10 @@ public class OrderController extends BaseController{
 //        System.out.println(claims + "+++++++++");
 
 
-
-
         return new JsonResult<Orders>(OK);
     }
 
-    private static Orders jsonToOrders(String strOrders){
+    private static Orders jsonToOrders(String strOrders) {
         JSONObject jsonObject = JSON.parseObject(strOrders);
         Orders orders = new Orders();
         orders.setStartPoint((String) jsonObject.get("startPoint"));
@@ -114,14 +113,14 @@ public class OrderController extends BaseController{
 
     @RequestMapping("get-ordersList")
     @ResponseBody
-    public List<Orders> getordersList(int pages){
+    public List<Orders> getordersList(int pages) {
         System.out.println("nihao++++++++++");
         List<Orders> orders = new ArrayList<>();
-        List<Object> orderList = redisUtils1.lRange("orderList", pages* 5L, pages* 5L +4);//从redis获取指定范围5个order
+        List<Object> orderList = redisUtils1.lRange("orderList", pages * 5L, pages * 5L + 4);//从redis获取指定范围5个order
 //        for (int i = 0; i < orderList.size(); i++) {
 //            System.out.println(orderList.get(i));
 //        }
-        System.out.println(orderList.size());
+        System.out.println(orderList.size()+"orderList.size");
         for (int i = 0; i < orderList.size(); i++) {
             orders.add((Orders) orderList.get(i));
 //            System.out.println(orders1);
@@ -130,13 +129,43 @@ public class OrderController extends BaseController{
 //        System.out.println(orders.toString()+"controller");
         return orders;
     }
+
     @RequestMapping("acceptOrder")
     @ResponseBody
-    public void acceptOrder(int ordersId,HttpSession session){
+    public void acceptOrder(int ordersId, HttpSession session) {
         User user = getUserFromJWT(session);
         redisUtils1.remove("order:" + ordersId);
-        ordersService.acceptOrder(ordersId,user.getUserId());
+        ordersService.acceptOrder(ordersId, user.getUserId());
         Orders res = ordersService.getOrdersByOrderId(ordersId);
-        redisUtils1.set("order:"+ordersId,res);
+        redisUtils1.set("order:" + ordersId, res);
+    }
+
+    @RequestMapping("getMyOrders")
+    @ResponseBody
+    public List<Orders> getMyOrders(int pages, HttpSession session) {
+        User user = getUserFromJWT(session);
+        List<Orders> orders = new ArrayList<>();
+        List<Object> orderList = redisUtils1.lRange("orderList:user:" + user.getUserId(), pages * 5L, pages * 5L + 4);//从redis获取指定范围5个order
+        System.out.println(user.getUserId());
+        System.out.println(orderList+"toString");
+        System.out.println(orderList.size()+"orderlist.size");
+        if (!redisUtils1.exists("orderList:user:" + user.getUserId())) {
+
+            orders = ordersService.getOrdersListByUserId(user.getUserId());
+            System.out.println("redis没有数据，从sql查找");
+
+        }
+//        for (int i = 0; i < orderList.size(); i++) {
+//            System.out.println(orderList.get(i));
+//        }
+//        System.out.println(orderList.size());
+        for (int i = 0; i < orderList.size(); i++) {
+            orders.add((Orders) orderList.get(i));
+
+//            System.out.println(orders1);
+        }
+//        orders = ordersService.getordersList(pages*5);
+//        System.out.println(orders.toString()+"controller");
+        return orders;
     }
 }

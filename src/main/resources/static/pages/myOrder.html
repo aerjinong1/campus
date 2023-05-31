@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<script src="/pages/js/jquery-1.8.0.min.js" type="text/javascript" charset="UTF-8"></script>
+
+<body>
+<div class="card-shadow">
+    <div id="myOrders" data-v-1c8857ca="" >
+
+    </div>
+
+  <button onclick="previouspages()">上一页</button>
+  <pages id="pages">1&nbsp;2</pages>
+  <button onclick="nextpages()">下一页</button>
+</div>
+<script>
+  function showdetail(id) {
+    var targetId=id
+    console.log(id)
+    console.log("targetid     "+targetId)
+    location.href="./orderDetail.html?orderid="+id
+    $.ajax({
+      type: 'GET',
+      dataType: "JSON",
+      data: "ordersId="+targetId,
+      url: "http://localhost:8080/getOrdersByOrderId",
+
+      success: function (res) {
+      },
+      error: function (res) {
+        alert(res+"error")
+      }
+    });
+    console.log(classes)
+  }
+</script>
+<script>
+  var pages = window.location.href.split("pages=")[1];
+  pages = parseInt(pages)
+
+  function previouspages(){
+    if (pages>0){
+      pages=pages-1
+      window.location.href="./myOrder.html?pages="+pages;
+    }
+  }
+  function nextpages(){
+    console.log(pages)
+    console.log(pages+1)
+    pages=pages+1
+    window.location.href="./myOrder.html?pages="+pages;
+  }
+</script>
+<script type="text/javascript">
+  function getClickID(clickID) {
+    alert(clickID);
+    console.log(window.location.href + "1")
+  }
+</script>
+
+<script>
+  function initData() {
+    target = window.location.href.split("?from=")[1]
+    pages = location.href
+    pages = pages.split("?pages=")[1]
+    pages = parseInt(pages)
+    // alert("success")
+    // alert("hhhh")
+    $.ajax({
+      type: 'GET',
+      dataType: "JSON",
+      url: "http://localhost:8080/getMyOrders",
+      data: "pages="+pages,
+      success: function (res) {
+        // alert("加载数据");
+        // console.log(res[1].toString+"           res")
+        // console.log(res[1].toString()+"           res")
+        // console.log(res[3].startPoint+"           res")
+        if (res.length>0){
+          for (let i = 0; i < res.length; i++) {
+            console.log(res.length+"：     length")
+            var status;
+            if (res[i].status===0) {
+              status="未被接取"
+            }else if (res[i].status===1){
+              status="派送中"
+            }else {
+              status="已完成"
+            }
+            // alert(targetKey.toString())
+            const target = document.getElementById("myOrders");
+            target.innerHTML +=
+                    '<div data-v-1c8857ca="" class="card-custom card-shadow"  className="card-custom card-shadow" id="'+res[i].orderId+'>"'
+                    +     '    <div className="orderid" >'+res[i].orderId+' <img className="sdsd"'
+                    +     'src="./img/icons/detail.png"'
+                    +     'alt=""'
+                    +     'width="10"'
+                    +     '>'
+                    +     '     </div>'
+                    +     '     <div className="orderid">'+res[i].startPoint+'</div>'
+                    +     '     <div className="orderid">'+res[i].weight+'</div>'
+                    +     '     <div className="orderid">'+res[i].price+'</div>'
+                    +     '     <div className="orderid">订单状态：  '+status+'</div>'
+                    +     ' </div>'
+          }
+
+        }else {
+          alert("再找也没有了")
+          previouspages()
+        }
+      },
+      error: function (res) {
+        alert(res.state)
+        alert("发生错误?");
+      }
+    });
+  }
+</script>
+<script>
+  $(window).load(function () {
+    initData()
+  });
+
+</script>
+</body>
+</html>

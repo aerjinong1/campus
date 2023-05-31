@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <meta charset="utf-8">
@@ -934,9 +934,8 @@
             padding: 1.25rem;
         }</style>
 </head>
-<script src="/pages/js/jquery-1.8.0.min.js"
-        type="javascript"
-        charset="UTF-8">
+<script src="/pages/js/jquery-1.8.0.min.js" type="text/javascript" charset="UTF-8"></script>
+
 </script>
 <body>
 <span><!---->
@@ -1222,7 +1221,7 @@
             xhrFields: {withCredentials: true},
             async: true,    //默认是true：异步，false：同步。
             success: function (data) {
-                callback(data);
+                // callback(data);
                 window.location.href="./myInfo.html"
             },
             error: function (data) {
@@ -1231,55 +1230,46 @@
         });
     }
 </script>
-<script>
-    $(window).load(function () {
-        initData()
-        f()
-    });
+<!--<script>-->
+<!--    $(window).load(function () {-->
+<!--        initData()-->
 
-</script>
-<script>
-    function initData() {
-        // alert("hhhh")
-        $.ajax({
-            type: 'GET',
-            dataType: "JSON",
-            url: "http://localhost:8080/getUserInfo",
+<!--    });-->
 
-            success: function (res) {
-                // alert("加载数据");
-                if (res.state === 200) {
-                    // alert("200")
-                    console.log(res);
-                    // alert(res.msg);
-                    var info = res.data;
-                    $("#name").val("asdasdasd")
-                    document.getElementById("name").innerHTML=info.userName;
-                    document.getElementById("show").innerText=info.userId;
-                    // document.getElementById("name").value="info.userName";
-                    // $("#name").attr("value", "info.userName");
-                    // $("#email").attr("value", info.email);
-                    // $("#password").attr("value", info.password);
-                    // $("#phone").attr("value", info.phone);
-                    // $("#address").attr("value", info.address);
-                    // $("#birthday").attr("value", info.birthday);
-                    // $("#picture").attr("src", info.icon);
-                } else {
-                    alert("用户信息不合法，或邮箱已被占用");
-                }
-            },
-            error: function (res) {
-                console.log(res)
-                console.log(res.data)
-                console.log(res.data.state)
-                alert(res.state)
-                alert("发生错误");
-            }
-        });
-    }
+<!--</script>-->
+<!--<script>-->
+<!--    function initData() {-->
+<!--        // alert("hhhh")-->
+<!--        $.ajax({-->
+<!--            type: 'GET',-->
+<!--            dataType: "JSON",-->
+<!--            url: "http://localhost:8080/getUserInfo",-->
+
+<!--            success: function (res) {-->
+<!--                // alert("加载数据");-->
+<!--                if (res.state === 200) {-->
+<!--                    // alert("200")-->
+<!--                    console.log(res);-->
+<!--                    // alert(res.msg);-->
+<!--                    var info = res.data;-->
+<!--                    $("#name").val("asdasdasd")-->
+<!--                    -->
+<!--                } else {-->
+<!--                    alert("用户信息不合法，或邮箱已被占用");-->
+<!--                }-->
+<!--            },-->
+<!--            error: function (res) {-->
+<!--                console.log(res)-->
+<!--                console.log(res.data)-->
+<!--                console.log(res.data.state)-->
+<!--                alert(res.state)-->
+<!--                alert("发生错误");-->
+<!--            }-->
+<!--        });-->
+<!--    }-->
 
 
-</script>
+<!--</script>-->
 <div style="all: initial;">
     <div style="all: initial;" id="__hcfy__"></div>
 </div>

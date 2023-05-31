@@ -9,7 +9,7 @@ import java.util.Date;
 public class Orders {
     @TableId
     private Integer orderId;
-    private String customer;
+    private Integer customer;
     private String orderName;
     private Integer several;//货物个数
     private Date createTime;

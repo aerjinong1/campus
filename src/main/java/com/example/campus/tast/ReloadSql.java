@@ -25,7 +25,7 @@ public class ReloadSql {
     OrderMapper orderMapper;
     @Scheduled(cron = "1 * * * * ?")
     public void updateRedisOfSQL(){
-        redisUtils1.remove("orderList");//清空redis
+        redisUtils1.remove("orderList");//删除orderList
         List<Orders> allByStatusOrders = orderMapper.getAllByStatusOrders();//数据库获取信息
         System.out.println(allByStatusOrders.get(1).getClass());
         for (int i = 0; i < allByStatusOrders.toArray().length; i++) {

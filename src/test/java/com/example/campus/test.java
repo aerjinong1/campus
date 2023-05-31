@@ -175,8 +175,10 @@ public class test {
 
     @Test
     public void res(){
-        System.out.println(SpringVersion.getVersion()+"springVersion");
-        System.out.println(SpringBootVersion.getVersion()+"springBootVersion");
+        List<Object> orderList = redisUtils1.lRange("orderList:user:" + 1223, 20L, (long) 4);//从redis获取指定范围5个order
+        System.out.println(redisUtils1.exists("orderList:user:" + 1223));
+        System.out.println(orderList.size());
+
     }
 
 }
